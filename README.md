@@ -1,4 +1,4 @@
-# TODO: Replace with the name of the repo
+# 2024-organismal-selection
 
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/projects/miniconda/en/latest/)
 
