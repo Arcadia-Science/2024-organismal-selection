@@ -39,6 +39,11 @@ conservation_table <- do.call(
   conservation
 )
 
+#Remove 'Hypsibius-dujardini' (outlier)
+conservation_table = conservation_table[
+  -grep('Hypsibius-dujardini',
+        conservation_table$nonref_species),]
+
 # Split table by species
 conservation_species <- split(
   conservation_table,
