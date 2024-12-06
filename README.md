@@ -6,7 +6,7 @@ Note: Analysis repo names should be prefixed with the year (e.g., `2024-noveltre
 
 ## Purpose
 
-This repository contains code for performing analyses related to the pub "The known protein universe is phylogenetically biased". Code for proteome curation, phylogenomic inference, and molecular conservation calculations can be HERE [replace with link].
+This repository contains code for performing analyses related to the pub "Leveraging evolution to identify novel organismal models of human biology". Code for proteome curation, phylogenomic inference, and molecular conservation calculations can be found HERE [replace with link].
 
 ## Installation and Setup
 
