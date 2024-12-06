@@ -1,0 +1,37 @@
+name: aa_stats_mv_dists
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies: # Uncomment below based on your OS
+  #- gcc_linux-64 # For Linux
+  #- gxx_linux-64 # For Linux, GCC C++ Compiler
+  #- clang_osx-64 # For macOS
+  #- clangxx_osx-64 # For macOS, Clang C++ Compiler
+  - llvm-openmp=17.0.6
+  - boost=1.84.0
+  - libxgboost=2.0.3
+  - texlive-core=20230313
+  - r-base=4.3.2
+  - r-essentials=4.3
+  - r-dplyr=1.1.4
+  - r-geiger=2.0.11
+  - r-rcpp=1.0.12
+  - r-rcpparmadillo=0.12.6.4.0
+  - r-matrix=1.6_5
+  - r-tidyverse=2.0.0
+  - r-reshape2=1.4.4
+  - r-ape=5.7_1
+  - mpfr=4.2.1
+  - gdal=3.8.3
+  - r-terra=1.7_71
+  - r-raster=3.6_26
+  - r-aws.s3=0.3.22
+  - bioconductor-biocinstaller=1.22.3
+  - perl=5.32.1
+  - wget
+  - unzip
+  - make
+  - cmake
+  - pre-commit=3.5.0
+  - ruff=0.4.8
