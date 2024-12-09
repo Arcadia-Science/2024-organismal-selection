@@ -3,7 +3,6 @@ message("Loading the protein mv distance calculation source functions...")
 suppressMessages(library(parallel))
 suppressMessages(library(RcppParallel))
 suppressMessages(library(tidyverse))
-suppressMessages(library(aws.s3))
 # Source the custom functions we use herein
 setwd("./src/")
 message(" 1. phylo_multivariate_distance_functions.R")
@@ -50,7 +49,9 @@ Sys.setenv(LD_LIBRARY_PATH = pathd8_path)
 
 message("Done. Time-calibrating our species tree...")
 # Set the noveltree results directory to path
-noveltree_out_dir <- "results-vibe-model-euks-v1-10062023/"
+noveltree_out_dir <-
+  "2024-organismal-selection-zenodo/results-noveltree-model-euks/"
+
 # Read in the asteroid species tree
 tree <-
   ladderize(read.tree(paste0(noveltree_out_dir,
@@ -59,7 +60,7 @@ tree <-
 tree$tip.label <- gsub("-", "_", tree$tip.label)
 
 # And the timetree.org tree
-tt <- read.tree("metadata-curation/final-species-shortlist-timetree.nwk")
+tt <- read.tree("data/final-species-shortlist-timetree.nwk")
 
 # First make sure the timetree is ultrametric, fully bifurcating,
 # with no 0-length branches
@@ -136,13 +137,4 @@ gf_conservation_res <-
            mc.cores = detectCores(), mc.preschedule = FALSE,
            max_treepl_treesize = 9999)
 
-message("Done. Uploading these results to S3...")
-# and finally, sync all these results to S3
-s3sync(path = "./gf-aa-multivar-distances/",
-       bucket = "arcadia-raas-organism-prioritization",
-       prefix = "conservation_score_v2_06012024/gf-aa-multivar-distances/",
-       direction = "upload",
-       region = "us-west-1",
-       verbose = TRUE)
-
-message("All finished!")
+message("Done!")
