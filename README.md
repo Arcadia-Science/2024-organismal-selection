@@ -42,10 +42,11 @@ Before proceeding with any (re)analysis, first download the NovelTree run output
 ```
 # !!!!!  DOWNLOAD FROM ZENODO  !!!!! #
 
-# !!!!! DECOMPRESS THE TARBALL !!!!! #
+# Extract these data:
+tar -xzvf ./results-noveltree-model-euks.tar.gz
 ```
 
-This directory, `2024-organismal-selection-zenodo`, contains the following:
+The data hosted on zenodo, includes the following:
 
 - `run_configurations/noveltree-model-euks-samplesheet.csv` - the samplesheet for our snakemake preprocessing workflow to filter and preprocess species proteomes prior to analysis with NovelTree.
 - `run_configurations/euk_preprocess_samplesheet.tsv` & `run_configurations/noveltree-model-euks-parameterfile.json` - the NovelTree sample and parameter files used to run NovelTree.
