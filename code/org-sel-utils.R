@@ -8,7 +8,8 @@ library(treeio)
 library(ggnewscale)
 library(phylobase)
 library(phylosignal)
-source("~/Documents/Research/Rfiles/arcadia_gradients.R")
+library(here)
+library(arcadiathemeR)
 
 # Function get gene symbols for uniprot IDs (relies on the function 'queryMany' from the package 'mygene')
 get_gene_symbols <- function(uniprot) {

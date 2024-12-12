@@ -1,5 +1,4 @@
-setwd("~/Documents/Research/github/2024-organismal-selection/")
-source("code/utils.R")
+source("code/org-sel-utils.R")
 
 ##### Phylogeny#####
 # Load
