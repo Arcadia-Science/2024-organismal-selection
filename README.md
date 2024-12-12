@@ -99,7 +99,9 @@ Rscript code/org-sel-data.R
 
 ### Compute Specifications
 
-TODO: Describe what compute resources were used to develop and run the analysis. For example, you could list the operating system, number of cores, RAM, and storage space. You should log any major changes to the compute specifications here as they happen.
+AUSTIN: Compute specifications for NovelTree, etc. 
+
+Analyses were done on an Apple MacBook Pro running macOS Montery with 32GB RAM, 10 cores, and 1TB of storage.
 
 ## Contributing
 
