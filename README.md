@@ -97,12 +97,6 @@ Rscript code/org-sel-data.R
 ```
 ### Description of the folder structure
 
-### Compute Specifications
-
-AUSTIN: Compute specifications for NovelTree, etc. 
-
-Analyses were done on an Apple MacBook Pro running macOS Montery with 32GB RAM, 10 cores, and 1TB of storage.
-
 ## Contributing
 
 See how we recognize [feedback and contributions to our code](https://github.com/Arcadia-Science/arcadia-software-handbook/blob/main/guides-and-standards/guide-credit-for-contributions.md).
