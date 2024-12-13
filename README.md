@@ -34,7 +34,7 @@ bash ./scripts/build_remaining_env_aa_stats_mv_dists.sh
 
 ## Data
 
-Before proceeding with any (re)analysis, first download the NovelTree run outputs from Zenodo HERE and decompress the outputs
+Before proceeding with any (re)analysis, first download the NovelTree run outputs from Zenodo [here](https://doi.org/10.5281/zenodo.14425432) and decompress the outputs
 
 ```
 # Download all data/results from Zenodo
