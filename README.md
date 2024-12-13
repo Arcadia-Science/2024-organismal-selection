@@ -34,16 +34,21 @@ bash ./scripts/build_remaining_env_aa_stats_mv_dists.sh
 
 ## Data
 
-Before proceeding with any (re)analysis, first download the NovelTree run outputs from Zenodo HERE and decompress the outputs # TODO
+Before proceeding with any (re)analysis, first download the NovelTree run outputs from Zenodo HERE and decompress the outputs
 
 ```
-# !!!!!  DOWNLOAD FROM ZENODO  !!!!! #
+# Download all data/results from Zenodo
+wget https://zenodo.org/records/14425432/files/2024-organismal-selection-zenodo.zip
 
 # Extract these data:
-tar -xzvf ./results-noveltree-model-euks.tar.gz
+unzip 2024-organismal-selection-zenodo.zip
+
+# Navigate into the directory and extract the NovelTree run outputs for reanalysis:
+cd 2024-organismal-selection-zenodo/
+tar -xzvf results-noveltree-model-euks.tar.gz
 ```
 
-The data hosted on zenodo, includes the following:
+The data hosted on zenodo, includes a directory (`2024-organismal-selection-zenodo/`) containing the following:
 
 - `run_configurations/noveltree-model-euks-samplesheet.csv` - the samplesheet for our snakemake preprocessing workflow to filter and preprocess species proteomes prior to analysis with NovelTree.
 - `run_configurations/euk_preprocess_samplesheet.tsv` & `run_configurations/noveltree-model-euks-parameterfile.json` - the NovelTree sample and parameter files used to run NovelTree.
@@ -83,10 +88,9 @@ Briefly, this script:
    - Uses this tree to transforms the AA physical properties such that we correct for phylogenetic non-independence between proteins
    - Calculate multivariate (mahalanobis) distances between proteins
 
-```
-To replicate the exploratory analyses in the pub
 
-```{bash}
+**To replicate the exploratory analyses of molecular conservation in the pub:**
+```
 # Activate conda environment
 conda activate RYANS_ENVIRONMENT
 
