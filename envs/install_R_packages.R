@@ -1,0 +1,11 @@
+install.packages("remote", version = "1.2.1")
+remote::install_github("Arcadia-Science/arcadiathemeR")
+install.packages("phylosignal", version = "1.3.1")
+install.packages("phylobase", version = "0.8.12")
+install.packages("BiocManager", version = "1.30.25")
+BiocManager::install("treeio", version = "1.30.0)
+install.packages("dplyr", version = "1.1.4")
+BiocManager::install("ggtree", version = "3.14.0")
+install.packages("phytools", version = "2.3")
+install.packages("elo", version = "3.0.2")
+
