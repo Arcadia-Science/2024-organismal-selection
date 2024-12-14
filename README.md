@@ -92,7 +92,10 @@ Briefly, this script:
 **To replicate the exploratory analyses of molecular conservation in the pub:**
 ```
 # Activate conda environment
-conda activate RYANS_ENVIRONMENT
+conda activate analysis.yml
+
+# Install the remaining R packages
+UPDATE
 
 # Load and organize data
 Rscript code/org-sel-data.R
