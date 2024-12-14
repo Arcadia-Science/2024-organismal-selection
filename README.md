@@ -94,16 +94,13 @@ Briefly, this script:
 # Activate conda environment
 conda activate analysis.yml
 
-# Install the remaining R packages
-UPDATE
+# Install the remaining R packages contained in "install_R_packages.R"
 
 # Load and organize data
 Rscript code/org-sel-data.R
 
-# Replicate analyses and pub figures in the script org-sel-analysis.R 
+# Code to recreate analyses and figures is in org-sel-analysis.R 
 ```
-### Description of the folder structure
-
 ## Contributing
 
 See how we recognize [feedback and contributions to our code](https://github.com/Arcadia-Science/arcadia-software-handbook/blob/main/guides-and-standards/guide-credit-for-contributions.md).
