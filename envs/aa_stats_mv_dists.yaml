@@ -3,11 +3,11 @@ channels:
   - conda-forge
   - bioconda
   - defaults
-dependencies: # Uncomment below based on your OS
-  #- gcc_linux-64 # For Linux
-  #- gxx_linux-64 # For Linux, GCC C++ Compiler
-  #- clang_osx-64 # For macOS
-  #- clangxx_osx-64 # For macOS, Clang C++ Compiler
+dependencies: # Uncomment the relevant lines below based on your operating system.
+  - gcc_linux-64  # Linux (GCC C compiler)
+  - gxx_linux-64  # Linux (GCC C++ compiler)
+  # - clang_osx-64  # macOS (Clang C compiler)
+  # - clangxx_osx-64  # macOS (Clang C++ compiler)
   - llvm-openmp=17.0.6
   - boost=1.84.0
   - libxgboost=2.0.3
