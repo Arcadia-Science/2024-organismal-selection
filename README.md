@@ -4,16 +4,16 @@
 
 ## Purpose
 
-This repository contains code for proteome curation, phylogenomic inference, molecular conservation calculations, and analyses related to the pub "Leveraging evolution to identify novel organismal models of human biology". 
+This repository contains code for proteome curation, phylogenomic inference, molecular conservation calculations, and analyses related to the pub ["Leveraging evolution to identify novel organismal models of human biology"](https://research.arcadiascience.com/pub/result-evolutionary-organismal-selection).
 
 ## Installation and Setup
 
 This repository uses conda to manage software environments and installations. You can find operating system-specific instructions for installing miniconda [here](https://docs.conda.io/projects/miniconda/en/latest/).
 
-After installing conda and [mamba](https://mamba.readthedocs.io/en/latest/), you can now build the environment. Because the conservation analysis depends on several R-packages not distributed through conda, as well as several software that must be locally compiled from source, you must take two additional steps before building the environment. First, you must edit the [environment YAML file](./envs/aa_stats_mv_dists.yml), uncommenting the C/C++ compilers that are appropriate for your operating system. This section of the environment YAML file is shown below.
+After installing conda and [mamba](https://mamba.readthedocs.io/en/latest/), you can now build the environment. Because the conservation analysis depends on several R packages not distributed through conda, as well as several packages that must be locally compiled from source, you must take two additional steps before building the environment. First, you must edit the [environment YAML file](./envs/aa_stats_mv_dists.yml), uncommenting the C/C++ compilers that are appropriate for your operating system. This section of the environment YAML file is shown below.
 
 ```
-dependencies: # Uncomment the relevant lines below based on your operating system.
+dependencies: # Comment and uncomment the relevant lines below based on your operating system.
   - gcc_linux-64  # Linux (GCC C compiler)
   - gxx_linux-64  # Linux (GCC C++ compiler)
   # - clang_osx-64  # macOS (Clang C compiler)
@@ -88,18 +88,25 @@ Briefly, this script:
    - Calculate multivariate (mahalanobis) distances between proteins
 
 
-**To replicate the exploratory analyses of molecular conservation in the pub:**
+## Replicating the analyses of molecular conservation in the pub
+
+Create the conda environment and install the remaining R packages:
+
 ```sh
-# Activate conda environment
-conda activate analysis.yml
+mamba env create -n organismal-selection-analysis --file envs/organismal-selection-analysis.yml
 
-# Install the remaining R packages contained in "install_R_packages.R"
+conda activate organismal-selection-analysis
 
-# Load and organize data
-Rscript code/org-sel-data.R
-
-# Code to recreate analyses and figures is in org-sel-analysis.R 
+Rscript code/install_R_packages.R
 ```
+
+Next, load and organize the data:
+
+```sh
+Rscript code/org-sel-data.R
+```
+
+The code to recreate the analyses and figures from the pub is in the script `code/org-sel-analysis.R`.
 
 ## Contributing
 

@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - bioconda
   - defaults
-dependencies: # Uncomment the relevant lines below based on your operating system.
+dependencies: # Comment and uncomment the relevant lines below based on your operating system.
   - gcc_linux-64  # Linux (GCC C compiler)
   - gxx_linux-64  # Linux (GCC C++ compiler)
   # - clang_osx-64  # macOS (Clang C compiler)
