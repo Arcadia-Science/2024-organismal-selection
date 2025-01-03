@@ -8,7 +8,7 @@ This repository contains code for proteome curation, phylogenomic inference, mol
 
 ## Installation and Setup
 
-This repository uses conda to manage software environments and installations. You can find operating system-specific instructions for installing miniconda [here](https://docs.conda.io/projects/miniconda/en/latest/).
+This repository uses conda to manage software environments and package installation. You can find operating system-specific instructions for installing miniconda [here](https://docs.conda.io/projects/miniconda/en/latest/).
 
 After installing conda and [mamba](https://mamba.readthedocs.io/en/latest/), you can now build the environment. Because the conservation analysis depends on several R packages not distributed through conda, as well as several packages that must be locally compiled from source, you must take two additional steps before building the environment. First, you must edit the [environment YAML file](./envs/aa_stats_mv_dists.yml), uncommenting the C/C++ compilers that are appropriate for your operating system. This section of the environment YAML file is shown below.
 
@@ -20,15 +20,17 @@ dependencies: # Comment and uncomment the relevant lines below based on your ope
   # - clangxx_osx-64  # macOS (Clang C++ compiler)
 ```
 
-Second, you must run an additional [build script](./code/build_remaining_env_aa_stats_mv_dists.sh) after creating and activating the new conda environment with the appropriate compilers installed. Below, we provide code to carry out the whole process (after modifying the environment YAML file).
+Second, you must run additional build scripts after creating and activating the new conda environment with the appropriate compilers installed. Below, we provide code to carry out the whole process (after modifying the environment YAML file).
 
 ```sh
-# Create the environment and activate it
+# Create the environment and activate it (after first editing the environment YAML file).
 mamba env create -n aa_stats_mv_dists --file envs/aa_stats_mv_dists.yml
 conda activate aa_stats_mv_dists
 
-# Install the remaining software within this conda environment:
-bash install/build_remaining_env_aa_stats_mv_dists.sh
+# Install the remaining dependencies within this conda environment:
+bash install/install_pathd8.sh
+bash install/install_treepl.sh
+bash install/install_r_packages_for_aa_stats_mv_dists.sh
 ```
 
 ## Data
@@ -36,7 +38,7 @@ bash install/build_remaining_env_aa_stats_mv_dists.sh
 Before proceeding with any (re)analysis, first download the NovelTree run outputs from Zenodo [here](https://doi.org/10.5281/zenodo.14425432) and decompress the outputs
 
 ```sh
-# Download all data/results from Zenodo
+# Download all data and results from Zenodo (note: this file is 13GB).
 wget https://zenodo.org/records/14425432/files/2024-organismal-selection-zenodo.zip
 
 # Extract these data:
@@ -111,4 +113,3 @@ The code to recreate the analyses and figures from the pub is in the script `cod
 ## Contributing
 
 See how we recognize [feedback and contributions to our code](https://github.com/Arcadia-Science/arcadia-software-handbook/blob/main/guides-and-standards/guide-credit-for-contributions.md).
-

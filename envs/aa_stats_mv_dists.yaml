@@ -35,3 +35,5 @@ dependencies: # Comment and uncomment the relevant lines below based on your ope
   - cmake
   - pre-commit=3.5.0
   - ruff=0.4.8
+  - pandas=2.2.3
+  - biopython=1.84
