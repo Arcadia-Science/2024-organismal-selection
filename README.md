@@ -28,7 +28,7 @@ mamba env create -n aa_stats_mv_dists --file envs/aa_stats_mv_dists.yml
 conda activate aa_stats_mv_dists
 
 # Install the remaining software within this conda environment:
-bash ./scripts/build_remaining_env_aa_stats_mv_dists.sh
+bash install/build_remaining_env_aa_stats_mv_dists.sh
 ```
 
 ## Data
@@ -97,7 +97,7 @@ mamba env create -n organismal-selection-analysis --file envs/organismal-selecti
 
 conda activate organismal-selection-analysis
 
-Rscript code/install_R_packages.R
+Rscript install/install_r_packages_for_analysis.R
 ```
 
 Next, load and organize the data:
