@@ -95,7 +95,7 @@ Briefly, this script:
 Create the conda environment and install the remaining R packages:
 
 ```sh
-mamba env create -n organismal-selection-analysis --file envs/organismal-selection-analysis.yml
+mamba env create -n organismal-selection-analysis --file envs/analysis.yml
 
 conda activate organismal-selection-analysis
 
