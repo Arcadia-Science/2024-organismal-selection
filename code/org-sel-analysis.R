@@ -24,7 +24,7 @@ tree_nh <- drop.tip(tree, "Homo-sapiens")
 # Load
 metadata <- read.csv("data/metadata.csv")
 # Match colors with taxa
-taxa_colors <- all_colors[1:length(unique(metadata$taxogroup2_unieuk))]
+taxa_colors <- all_colors[seq_along(unique(metadata$taxogroup2_unieuk))]
 names(taxa_colors) <- unique(metadata$taxogroup2_unieuk)
 
 # Match with species
@@ -234,7 +234,7 @@ fitted <- fitted / sum(fitted)
 n <- 100000 * fitted
 
 pool <- c()
-for (i in 1:length(n)) {
+for (i in seq_along(n)) {
   pool <- c(pool, rep(names(n)[i], n[i]))
 }
 
@@ -271,12 +271,12 @@ for (i in seq(
   # Create empty vector to save individual permutations
   lengths <- c()
 
-  # Permutate
-  for (j in 1:n_perms) {
+  # Permute
+  for (j in seq_len(n_perms)) {
     # Calculate the number of species present per sample
     lengths <- c(
       lengths,
-      length(table(pool[sample(1:length(pool), i)]))
+      length(table(pool[sample(seq_along(pool), i)]))
     )
   }
 
@@ -338,7 +338,7 @@ lines(log(as.numeric(names(perms))),
 ## to evolutionary distance
 # Calculate phylogenetic dispersion per OG
 phylo_dist_per_og <- list()
-for (i in 1:length(conservation)) {
+for (i in seq_along(conservation)) {
   # Get species in OG
   species_og <- unique(conservation[[i]]$nonref_species)
 
@@ -434,7 +434,7 @@ plot(unname(unlist(stats)),
   cex.axis = 1.5,
   cex.lab = 1.5
 )
-for (i in 1:length(stats)) {
+for (i in seq_along(stats)) {
   points(rep(i, length(hcl_conservation[[i]]$trait_dist)),
     hcl_conservation[[i]]$trait_dist,
     pch = 20,
@@ -458,7 +458,7 @@ pb <- txtProgressBar(
 )
 
 og_slopes <- list()
-for (i in 1:length(conservation_species_best)) {
+for (i in seq_along(conservation_species_best)) {
   # Update counter
   setTxtProgressBar(pb, i)
 
@@ -715,7 +715,7 @@ colnames(conservation_matrix) <- names(conservation_species_best)
 rownames(conservation_matrix) <- tree_nh$tip.label
 
 # Add in conservation values
-for (i in 1:length(conservation_species_best)) {
+for (i in seq_along(conservation_species_best)) {
   x <- conservation_species_best[[i]]$trait_dist[
     match(
       rownames(conservation_matrix),
@@ -832,7 +832,7 @@ pb <- txtProgressBar(
   width = 100,
   char = "."
 )
-for (i in 1:length(conservation_species_best)) {
+for (i in seq_along(conservation_species_best)) {
   # Update counter
   setTxtProgressBar(pb, i)
 
@@ -854,7 +854,7 @@ for (i in 1:length(conservation_species_best)) {
   x <- x[!x[, 1] == x[, 2], ]
 
   # Add outcomes
-  for (j in 1:nrow(x)) {
+  for (j in seq_len(nrow(x))) {
     x$spp1_cons[j] <- min(conservation_species_best[[i]]$rank_trait_dist_norm[
       grep(
         x$spp1[j],
@@ -879,7 +879,7 @@ protein_sample <- do.call(rbind, lapply(
   matchup_outcomes,
   function(x) {
     if (nrow(x) >= 10) {
-      x[sample(1:nrow(x), 10), ]
+      x[sample(seq_len(nrow(x)), 10), ]
     }
   }
 ))
