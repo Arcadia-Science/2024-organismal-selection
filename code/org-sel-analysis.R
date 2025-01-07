@@ -900,20 +900,20 @@ set.seed(1234)
 for (g in 1:n_perms) {
   # Update counter
   print(paste(g, "out of", n_perms))
-  
+
   # Calculate elo scores n times
   mean_elo_scores <- list()
-  
+
   # Subsample outcomes
   test <- protein_sample[sample(1:nrow(protein_sample), 10000), ]
-  
+
   for (h in 1:n_perms) {
     # Reorder
     test <- test[sample(1:nrow(test)), ]
-    
+
     # Remove self
     test <- test[!test[, 1] == test[, 2], ]
-    
+
     # Create matrix containing elo for each species
     # (to be updated w/ each match)
     unique_species <- unique(test$spp1)
@@ -924,13 +924,13 @@ for (g in 1:n_perms) {
       ),
       row.names = unique_species
     )
-    
+
     # Create species elo lists to keep score records
     species_elo <- split(
       rep(1500, length(unique_species)),
       unique_species
     )
-    
+
     # Loop over and simulate outcomes for each match
     pb <- txtProgressBar(
       min = 1,
@@ -939,15 +939,15 @@ for (g in 1:n_perms) {
       width = 100,
       char = "."
     )
-    
+
     for (i in 1:nrow(test)) {
       # Update counter
       setTxtProgressBar(pb, i)
-      
+
       # Get outcome
       outcome <- unlist(test[i, 3:4])
       names(outcome) <- test[i, 1:2]
-      
+
       # Convert to wins
       if (outcome[1] == outcome[2]) {
         outcome <- c(0.5, 0.5)
@@ -957,13 +957,13 @@ for (g in 1:n_perms) {
         outcome[x] <- 1
         outcome[y] <- 0
       }
-      
+
       # Get probabilities
       probs <- elo_scores[match(
         c(test[i, 1:2]),
         rownames(elo_scores)
       ), 1]
-      
+
       # Calculate elo
       elo_update <- elo.calc(outcome,
                              rep(probs[1], 2),
@@ -971,18 +971,18 @@ for (g in 1:n_perms) {
                              k = 4
       )[1, ]
       names(elo_update) <- names(outcome)
-      
+
       # Update elo matrix
       elo_scores[grep(
         names(elo_update)[1],
         rownames(elo_scores)
       ), 1] <- elo_update[1]
-      
+
       elo_scores[grep(
         names(elo_update)[2],
         rownames(elo_scores)
       ), 1] <- elo_update[2]
-      
+
       # Update species scores
       x <- species_elo[[grep(
         names(elo_update)[1],
@@ -993,7 +993,7 @@ for (g in 1:n_perms) {
         names(elo_update)[1],
         names(species_elo)
       )]] <- x
-      
+
       x <- species_elo[[grep(
         names(elo_update)[2],
         names(species_elo)
@@ -1003,7 +1003,7 @@ for (g in 1:n_perms) {
         names(elo_update)[2],
         names(species_elo)
       )]] <- x
-      
+
       # Add to list
       mean_elo_scores[[as.character(h)]] <- as.data.frame(elo_scores)
       all_species_elo_distributions[[as.character(h)]] <- species_elo
@@ -1011,7 +1011,7 @@ for (g in 1:n_perms) {
   }
   # Calculate mean elo score per species
   n <- as.character(unique(matchups$Var1))
-  
+
   mean_elo_scores <- do.call(
     cbind,
     lapply(
@@ -1025,7 +1025,7 @@ for (g in 1:n_perms) {
     )
   )
   rownames(mean_elo_scores) <- n
-  
+
   # Plot distribution of matches
   plot(
     approx(1:length(species_elo[[1]]),
