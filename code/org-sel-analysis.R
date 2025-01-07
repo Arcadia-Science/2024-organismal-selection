@@ -905,11 +905,11 @@ for (g in 1:n_perms) {
   mean_elo_scores <- list()
 
   # Subsample outcomes
-  test <- protein_sample[sample(1:nrow(protein_sample), 10000), ]
+  test <- protein_sample[sample(seq_len(nrow(protein_sample)), 10000), ]
 
   for (h in 1:n_perms) {
     # Reorder
-    test <- test[sample(1:nrow(test)), ]
+    test <- test[sample(seq_len(nrow(test))), ]
 
     # Remove self
     test <- test[!test[, 1] == test[, 2], ]
@@ -940,7 +940,7 @@ for (g in 1:n_perms) {
       char = "."
     )
 
-    for (i in 1:nrow(test)) {
+    for (i in seq_len(nrow(test))) {
       # Update counter
       setTxtProgressBar(pb, i)
 
@@ -966,9 +966,9 @@ for (g in 1:n_perms) {
 
       # Calculate elo
       elo_update <- elo.calc(outcome,
-                             rep(probs[1], 2),
-                             rep(probs[2], 2),
-                             k = 4
+        rep(probs[1], 2),
+        rep(probs[2], 2),
+        k = 4
       )[1, ]
       names(elo_update) <- names(outcome)
 
@@ -1028,9 +1028,9 @@ for (g in 1:n_perms) {
 
   # Plot distribution of matches
   plot(
-    approx(1:length(species_elo[[1]]),
-           species_elo[[1]],
-           n = 100
+    approx(seq_along(species_elo[[1]]),
+      species_elo[[1]],
+      n = 100
     )$y,
     type = "l",
     ylim = c(1400, 1650),
@@ -1045,11 +1045,11 @@ for (g in 1:n_perms) {
     )]
   )
   abline(h = 1500, lty = "dashed", lwd = 1.5)
-  for (i in 1:length(species_elo)) {
+  for (i in seq_along(species_elo)) {
     lines(
-      approx(1:length(species_elo[[i]]),
-             species_elo[[i]],
-             n = 100
+      approx(seq_along(species_elo[[i]]),
+        species_elo[[i]],
+        n = 100
       )$y,
       col = species_colors[match(
         names(species_elo)[i],
