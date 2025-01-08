@@ -10,7 +10,7 @@ This repository contains code for proteome curation, phylogenomic inference, mol
 
 This repository uses conda to manage software environments and package installation. You can find operating system-specific instructions for installing miniconda [here](https://docs.conda.io/projects/miniconda/en/latest/).
 
-After installing conda and [mamba](https://mamba.readthedocs.io/en/latest/), you can now build the environment. Because the conservation analysis depends on several R packages not distributed through conda, as well as several packages that must be locally compiled from source, you must take two additional steps before building the environment. First, you must edit the [environment YAML file](./envs/aa_stats_mv_dists.yml), uncommenting the C/C++ compilers that are appropriate for your operating system. This section of the environment YAML file is shown below.
+After installing conda and [mamba](https://mamba.readthedocs.io/en/latest/), you can now build the environment. Because the conservation analysis depends on several R packages not distributed through conda, as well as several packages that must be locally compiled from source, you must take two additional steps before building the environment. First, you must edit the [environment YAML file](./envs/aa_stats_mv_dists.yml), uncommenting the C/C++ compilers that are appropriate for your operating system. This section of the environment YAML file is shown below. Currently, a Unix-like environment is assumed, with Linux-specific compilers uncommented by default. If you are running on Mac, you'll need to comment the `GCC` compilers, and uncomment those for `clang`. 
 
 ```
 dependencies: # Comment and uncomment the relevant lines below based on your operating system.
