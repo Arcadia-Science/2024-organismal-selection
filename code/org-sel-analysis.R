@@ -24,7 +24,7 @@ tree_nh <- drop.tip(tree, "Homo-sapiens")
 # Load
 metadata <- read.csv("data/metadata.csv")
 # Match colors with taxa
-taxa_colors <- all_colors[1:length(unique(metadata$taxogroup2_unieuk))]
+taxa_colors <- all_colors[seq_along(unique(metadata$taxogroup2_unieuk))]
 names(taxa_colors) <- unique(metadata$taxogroup2_unieuk)
 
 # Match with species
@@ -234,7 +234,7 @@ fitted <- fitted / sum(fitted)
 n <- 100000 * fitted
 
 pool <- c()
-for (i in 1:length(n)) {
+for (i in seq_along(n)) {
   pool <- c(pool, rep(names(n)[i], n[i]))
 }
 
@@ -271,12 +271,12 @@ for (i in seq(
   # Create empty vector to save individual permutations
   lengths <- c()
 
-  # Permutate
-  for (j in 1:n_perms) {
+  # Permute
+  for (j in seq_len(n_perms)) {
     # Calculate the number of species present per sample
     lengths <- c(
       lengths,
-      length(table(pool[sample(1:length(pool), i)]))
+      length(table(pool[sample(seq_along(pool), i)]))
     )
   }
 
@@ -338,7 +338,7 @@ lines(log(as.numeric(names(perms))),
 ## to evolutionary distance
 # Calculate phylogenetic dispersion per OG
 phylo_dist_per_og <- list()
-for (i in 1:length(conservation)) {
+for (i in seq_along(conservation)) {
   # Get species in OG
   species_og <- unique(conservation[[i]]$nonref_species)
 
@@ -434,7 +434,7 @@ plot(unname(unlist(stats)),
   cex.axis = 1.5,
   cex.lab = 1.5
 )
-for (i in 1:length(stats)) {
+for (i in seq_along(stats)) {
   points(rep(i, length(hcl_conservation[[i]]$trait_dist)),
     hcl_conservation[[i]]$trait_dist,
     pch = 20,
@@ -458,7 +458,7 @@ pb <- txtProgressBar(
 )
 
 og_slopes <- list()
-for (i in 1:length(conservation_species_best)) {
+for (i in seq_along(conservation_species_best)) {
   # Update counter
   setTxtProgressBar(pb, i)
 
@@ -715,7 +715,7 @@ colnames(conservation_matrix) <- names(conservation_species_best)
 rownames(conservation_matrix) <- tree_nh$tip.label
 
 # Add in conservation values
-for (i in 1:length(conservation_species_best)) {
+for (i in seq_along(conservation_species_best)) {
   x <- conservation_species_best[[i]]$trait_dist[
     match(
       rownames(conservation_matrix),
@@ -832,7 +832,7 @@ pb <- txtProgressBar(
   width = 100,
   char = "."
 )
-for (i in 1:length(conservation_species_best)) {
+for (i in seq_along(conservation_species_best)) {
   # Update counter
   setTxtProgressBar(pb, i)
 
@@ -854,7 +854,7 @@ for (i in 1:length(conservation_species_best)) {
   x <- x[!x[, 1] == x[, 2], ]
 
   # Add outcomes
-  for (j in 1:nrow(x)) {
+  for (j in seq_len(nrow(x))) {
     x$spp1_cons[j] <- min(conservation_species_best[[i]]$rank_trait_dist_norm[
       grep(
         x$spp1[j],
@@ -879,7 +879,7 @@ protein_sample <- do.call(rbind, lapply(
   matchup_outcomes,
   function(x) {
     if (nrow(x) >= 10) {
-      x[sample(1:nrow(x), 10), ]
+      x[sample(seq_len(nrow(x)), 10), ]
     }
   }
 ))
@@ -900,20 +900,20 @@ set.seed(1234)
 for (g in 1:n_perms) {
   # Update counter
   print(paste(g, "out of", n_perms))
-  
+
   # Calculate elo scores n times
   mean_elo_scores <- list()
-  
+
   # Subsample outcomes
-  test <- protein_sample[sample(1:nrow(protein_sample), 10000), ]
-  
+  test <- protein_sample[sample(seq_len(nrow(protein_sample)), 10000), ]
+
   for (h in 1:n_perms) {
     # Reorder
-    test <- test[sample(1:nrow(test)), ]
-    
+    test <- test[sample(seq_len(nrow(test))), ]
+
     # Remove self
     test <- test[!test[, 1] == test[, 2], ]
-    
+
     # Create matrix containing elo for each species
     # (to be updated w/ each match)
     unique_species <- unique(test$spp1)
@@ -924,13 +924,13 @@ for (g in 1:n_perms) {
       ),
       row.names = unique_species
     )
-    
+
     # Create species elo lists to keep score records
     species_elo <- split(
       rep(1500, length(unique_species)),
       unique_species
     )
-    
+
     # Loop over and simulate outcomes for each match
     pb <- txtProgressBar(
       min = 1,
@@ -939,15 +939,15 @@ for (g in 1:n_perms) {
       width = 100,
       char = "."
     )
-    
-    for (i in 1:nrow(test)) {
+
+    for (i in seq_len(nrow(test))) {
       # Update counter
       setTxtProgressBar(pb, i)
-      
+
       # Get outcome
       outcome <- unlist(test[i, 3:4])
       names(outcome) <- test[i, 1:2]
-      
+
       # Convert to wins
       if (outcome[1] == outcome[2]) {
         outcome <- c(0.5, 0.5)
@@ -957,32 +957,32 @@ for (g in 1:n_perms) {
         outcome[x] <- 1
         outcome[y] <- 0
       }
-      
+
       # Get probabilities
       probs <- elo_scores[match(
         c(test[i, 1:2]),
         rownames(elo_scores)
       ), 1]
-      
+
       # Calculate elo
       elo_update <- elo.calc(outcome,
-                             rep(probs[1], 2),
-                             rep(probs[2], 2),
-                             k = 4
+        rep(probs[1], 2),
+        rep(probs[2], 2),
+        k = 4
       )[1, ]
       names(elo_update) <- names(outcome)
-      
+
       # Update elo matrix
       elo_scores[grep(
         names(elo_update)[1],
         rownames(elo_scores)
       ), 1] <- elo_update[1]
-      
+
       elo_scores[grep(
         names(elo_update)[2],
         rownames(elo_scores)
       ), 1] <- elo_update[2]
-      
+
       # Update species scores
       x <- species_elo[[grep(
         names(elo_update)[1],
@@ -993,7 +993,7 @@ for (g in 1:n_perms) {
         names(elo_update)[1],
         names(species_elo)
       )]] <- x
-      
+
       x <- species_elo[[grep(
         names(elo_update)[2],
         names(species_elo)
@@ -1003,7 +1003,7 @@ for (g in 1:n_perms) {
         names(elo_update)[2],
         names(species_elo)
       )]] <- x
-      
+
       # Add to list
       mean_elo_scores[[as.character(h)]] <- as.data.frame(elo_scores)
       all_species_elo_distributions[[as.character(h)]] <- species_elo
@@ -1011,7 +1011,7 @@ for (g in 1:n_perms) {
   }
   # Calculate mean elo score per species
   n <- as.character(unique(matchups$Var1))
-  
+
   mean_elo_scores <- do.call(
     cbind,
     lapply(
@@ -1025,12 +1025,12 @@ for (g in 1:n_perms) {
     )
   )
   rownames(mean_elo_scores) <- n
-  
+
   # Plot distribution of matches
   plot(
-    approx(1:length(species_elo[[1]]),
-           species_elo[[1]],
-           n = 100
+    approx(seq_along(species_elo[[1]]),
+      species_elo[[1]],
+      n = 100
     )$y,
     type = "l",
     ylim = c(1400, 1650),
@@ -1045,11 +1045,11 @@ for (g in 1:n_perms) {
     )]
   )
   abline(h = 1500, lty = "dashed", lwd = 1.5)
-  for (i in 1:length(species_elo)) {
+  for (i in seq_along(species_elo)) {
     lines(
-      approx(1:length(species_elo[[i]]),
-             species_elo[[i]],
-             n = 100
+      approx(seq_along(species_elo[[i]]),
+        species_elo[[i]],
+        n = 100
       )$y,
       col = species_colors[match(
         names(species_elo)[i],

@@ -1,12 +1,19 @@
 source("code/org-sel-utils.R")
 
 ##### Download data from Zenodo#####
-# Download
-system("wget https://zenodo.org/records/14425432/files/2024-organismal-selection-zenodo.zip?download=1 -P 'data/'")
+zip_url <- paste0(
+  "https://zenodo.org/records/14425432/files/",
+  "2024-organismal-selection-zenodo.zip?download=1"
+)
+system(paste("wget", zip_url, "-P", "data/"))
 
 # Unzip
-system("unzip 2024-organismal-selection-zenodo.zip -d data/")
-system("tar -xvzf data/organismal-selection-zenodo/gf-aa-multivar-distances.tar.gz -C data/2024-organismal-selection-zenodo/")
+tar_file <- file.path(
+  "data", "organismal-selection-zenodo",
+  "gf-aa-multivar-distances.tar.gz"
+)
+out_dir <- file.path("data", "2024-organismal-selection-zenodo")
+system(paste("tar -xvzf", tar_file, "-C", out_dir))
 
 ##### Phylogeny#####
 # Load
@@ -20,20 +27,24 @@ tree_nh <- drop.tip(tree, "Homo-sapiens")
 
 ##### Protein conservation#####
 # Set path
-path <- "data/2024-organismal-selection-zenodo/gf-aa-multivar-distances/final_protein_pair_summary_tables/"
+path <- file.path(
+  "data", "2024-organismal-selection-zenodo",
+  "gf-aa-multivar-distances",
+  "final_protein_pair_summary_tables"
+)
 
 # List files (each corresponds to a gene family ('OG...'))
 files <- list.files(path)
 
 # Load all gene families and add to 'conservation'
 conservation <- list()
-for (i in 1:length(files)) {
+for (i in seq_along(files)) {
   # Load file and add to list
   conservation[[gsub(
     "_final_summary_table.tsv",
     "",
     files[i]
-  )]] <- read.delim(paste(path, files[i], sep = ''))
+  )]] <- read.delim(paste(path, files[i], sep = ""))
 
   # Normalize trait distance rank by gene family size (useful for filtering)
   conservation[[i]]$rank_trait_dist_norm <-
@@ -47,9 +58,9 @@ conservation_table <- do.call(
 )
 
 #Remove 'Hypsibius-dujardini' (outlier)
-conservation_table = conservation_table[
-  -grep('Hypsibius-dujardini',
-        conservation_table$nonref_species),]
+conservation_table <-
+  conservation_table[-grep("Hypsibius-dujardini",
+                           conservation_table$nonref_species), ]
 
 # Split table by species
 conservation_species <- split(
@@ -65,7 +76,7 @@ conservation_species_best <- split(
 )
 
 # Loop over and select most conserved protein for each species
-for (i in 1:length(conservation_species_best)) {
+for (i in seq_along(conservation_species_best)) {
   # Split on species ID
   species_best <- split(
     conservation_species_best[[i]],

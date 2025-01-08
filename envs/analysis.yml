@@ -1,4 +1,4 @@
-name: base
+name: organismal-selection-analysis
 channels:
   - defaults
 dependencies:
@@ -15,4 +15,3 @@ dependencies:
   - r-here=1.0.1
   - r-ggnewscale=0.5.0
   - r-ape=5.8
-prefix: /Users/ryanyork/miniconda3

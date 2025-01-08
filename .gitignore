@@ -82,3 +82,6 @@ venv/
 # Nextflow related folders and files
 .nextflow*
 work/
+
+# R related folders and files
+.Rhistory

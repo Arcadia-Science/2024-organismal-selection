@@ -4,40 +4,41 @@
 
 ## Purpose
 
-This repository contains code for proteome curation, phylogenomic inference, molecular conservation calculations, and analyses related to the pub "Leveraging evolution to identify novel organismal models of human biology". 
+This repository contains code for proteome curation, phylogenomic inference, molecular conservation calculations, and analyses related to the pub ["Leveraging evolution to identify novel organismal models of human biology"](https://research.arcadiascience.com/pub/result-evolutionary-organismal-selection).
 
 ## Installation and Setup
 
-This repository uses conda to manage software environments and installations. You can find operating system-specific instructions for installing miniconda [here](https://docs.conda.io/projects/miniconda/en/latest/).
+This repository uses conda to manage software environments and package installation. You can find operating system-specific instructions for installing miniconda [here](https://docs.conda.io/projects/miniconda/en/latest/).
 
-After installing conda and [mamba](https://mamba.readthedocs.io/en/latest/), you can now build the environment. Because the conservation analysis depends on several R-packages not distributed through conda, as well as several software that must be locally compiled from source, you must take two additional steps before building the environment. First, you must edit the [environment YAML file](./envs/aa_stats_mv_dists.yml), uncommenting the C/C++ compilers that are appropriate for your operating system. This section of the environment YAML file is shown below.
+After installing conda and [mamba](https://mamba.readthedocs.io/en/latest/), you can now build the environment. Because the conservation analysis depends on several R packages not distributed through conda, as well as several packages that must be locally compiled from source, you must take two additional steps before building the environment. First, you must edit the [environment YAML file](./envs/aa_stats_mv_dists.yml), uncommenting the C/C++ compilers that are appropriate for your operating system. This section of the environment YAML file is shown below. Currently, a Unix-like environment is assumed, with Linux-specific compilers uncommented by default. If you are running on Mac, you'll need to comment the `GCC` compilers, and uncomment those for `clang`. 
 
 ```
-dependencies: # Uncomment below based on your OS
-  #- gcc_linux-64 # Uncomment if running on Linux
-  #- gxx_linux-64 # Uncomment if running on Linux, GCC C++ Compiler
-  #- clang_osx-64 # Uncomment if running on macOS
-  #- clangxx_osx-64 # Uncomment if running on macOS, Clang C++ Compiler
+dependencies: # Comment and uncomment the relevant lines below based on your operating system.
+  - gcc_linux-64  # Linux (GCC C compiler)
+  - gxx_linux-64  # Linux (GCC C++ compiler)
+  # - clang_osx-64  # macOS (Clang C compiler)
+  # - clangxx_osx-64  # macOS (Clang C++ compiler)
 ```
 
-Second, you must run an additional [build script](./code/build_remaining_env_aa_stats_mv_dists.sh) after creating and activating the new conda environment with the appropriate compilers installed. Below, we provide code to carry out the whole process (after modifying the environment YAML file).
+Second, you must run additional build scripts after creating and activating the new conda environment with the appropriate compilers installed. Below, we provide code to carry out the whole process (after modifying the environment YAML file).
 
-```{bash}
-# Create the environment and activate it
+```sh
+# Create the environment and activate it (after first editing the environment YAML file).
 mamba env create -n aa_stats_mv_dists --file envs/aa_stats_mv_dists.yml
 conda activate aa_stats_mv_dists
 
-# Install the remaining software within this conda environment:
-bash ./scripts/build_remaining_env_aa_stats_mv_dists.sh
-
+# Install the remaining dependencies within this conda environment:
+bash install/install_pathd8.sh
+bash install/install_treepl.sh
+bash install/install_r_packages_for_aa_stats_mv_dists.sh
 ```
 
 ## Data
 
 Before proceeding with any (re)analysis, first download the NovelTree run outputs from Zenodo [here](https://doi.org/10.5281/zenodo.14425432) and decompress the outputs
 
-```
-# Download all data/results from Zenodo
+```sh
+# Download all data and results from Zenodo (note: this file is 13GB).
 wget https://zenodo.org/records/14425432/files/2024-organismal-selection-zenodo.zip
 
 # Extract these data:
@@ -62,7 +63,7 @@ The data hosted on zenodo, includes a directory (`2024-organismal-selection-zeno
 
 With the NovelTree run outputs downloaded and extracted into the base directory of this repository, we now proceed by calling the script `code/genefam_aa_summaries.py`. This bash script calculates for each protein sequence within each gene family, summaries of AA composition, as well as AA physical properties. All code below assumes that you have downloaded and extracted the directory `2024-organismal-selection-zenodo/` from this pubs correspoding Zenodo repository.
 
-```{bash}
+```sh
 # Ensure we are calling this script within the correct conda environment
 conda activate aa_stats_mv_dists
 
@@ -75,7 +76,7 @@ python code/genefam_aa_summaries.py -t 10 $msa_dir
 
 This will create a new directory called "aa-summary-stats/" that contains the calculated AA properties for each protein, and summarized for each gene famly. With these protein properties curated, we can now proceed with the calculation of pairwise multivariate distances between proteins within each gene family.
 
-```{bash}
+```sh
 Rscript code/calc_protein_mv_distances.R
 ```
 
@@ -89,19 +90,26 @@ Briefly, this script:
    - Calculate multivariate (mahalanobis) distances between proteins
 
 
-**To replicate the exploratory analyses of molecular conservation in the pub:**
+## Replicating the analyses of molecular conservation in the pub
+
+Create the conda environment and install the remaining R packages:
+
+```sh
+mamba env create -n organismal-selection-analysis --file envs/analysis.yml
+
+conda activate organismal-selection-analysis
+
+Rscript install/install_r_packages_for_analysis.R
 ```
-# Activate conda environment
-conda activate analysis.yml
 
-# Install the remaining R packages contained in "install_R_packages.R"
+Next, load and organize the data:
 
-# Load and organize data
+```sh
 Rscript code/org-sel-data.R
-
-# Code to recreate analyses and figures is in org-sel-analysis.R 
 ```
+
+The code to recreate the analyses and figures from the pub is in the script `code/org-sel-analysis.R`.
+
 ## Contributing
 
 See how we recognize [feedback and contributions to our code](https://github.com/Arcadia-Science/arcadia-software-handbook/blob/main/guides-and-standards/guide-credit-for-contributions.md).
-
