@@ -27,7 +27,7 @@ get_gene_symbols <- function(uniprot) {
   genes <- genes[match(uniprot, genes$query), ]
 
   # Return
-  return(genes)
+  genes
 }
 
 # Function to darken color
@@ -46,7 +46,7 @@ gettreedata <- function(tree, meta) {
   d$label <- row.names(d)
   y <- full_join(as_tibble(tree), d, by = "label")
   y <- as.treedata(y)
-  return(y)
+  y
 }
 
 
