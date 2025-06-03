@@ -233,7 +233,7 @@ pairwise_mahalanobis <- function(data_matrix) {
   distance_matrix <- process_all_chunks(pair_chunks, data_matrix, inv_cov)
   rownames(distance_matrix) <- rownames(data_matrix)
   colnames(distance_matrix) <- rownames(data_matrix)
-  return(distance_matrix)
+  distance_matrix
 }
 
 # A function to facilitate the parallelization of mahalanobis distances
@@ -281,5 +281,5 @@ process_all_chunks <- function(pair_chunks, data_matrix, inv_cov) {
     }
   }
   diag(distance_matrix) <- 0
-  return(distance_matrix)
+  distance_matrix
 }

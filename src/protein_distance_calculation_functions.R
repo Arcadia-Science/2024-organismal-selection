@@ -118,6 +118,12 @@ calc_prot_spp_dists <-
                              colnames(dist_mat)[focal_dists_idx]))
     focal_prots <- rownames(focal_dists)
 
+    # Now, on a protein-by-protein basis, conduct permutation tests to assess
+    # whether individual non-reference species / reference species protein pairs
+    # are significantly less dissimilar than expected.
+    per_prot_pval_res <-
+      dist_permute_test(dist_mat, focal_dists, n_permutations = 10000) # nolint
+
     # Extract protein names from row names
     obs_names <- rownames(focal_dists)
 
@@ -220,6 +226,8 @@ calc_prot_spp_dists <-
         phylo_dist = phyl_dists,
         trait_dist = per_prot_dist_res$distance,
         rank_trait_dist = per_prot_dist_res$rank_distance,
+        pvalue_rowwise = per_prot_pval_res$pvalue_across_nonref,
+        pvalue_colwise = per_prot_pval_res$pvalue_within_nonref,
       )
     # And return all outputs
     return(
