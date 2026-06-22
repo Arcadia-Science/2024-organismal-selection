@@ -1,5 +1,6 @@
 name: organismal-selection-analysis
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - python=3.11
@@ -9,7 +10,6 @@ dependencies:
   - wheel
   - conda-content-trust
   - conda-libmamba-solver
-  - python.app
   - mamba
   - r-essentials
   - r-here=1.0.1

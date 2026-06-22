@@ -108,7 +108,15 @@ Next, load and organize the data:
 Rscript code/org-sel-data.R
 ```
 
-The code to recreate the analyses and figures from the pub is in the script `code/org-sel-analysis.R`.
+The code to recreate the analyses and figures from the pub is in the script `code/org-sel-analysis.R`. This script reads a species metadata table from `data/metadata.csv` (loaded at the top of the script). This file is not produced by any of the scripts above and must be present before running the analysis. It is a comma-separated table with one row per species and the following columns:
+
+- `genus.species`: species identifier, matching the tip labels of `data/congruified_spprax_species_tree.newick` (e.g. `Homo-sapiens`).
+- `taxogroup1_unieuk`: the high-level UniEuk taxonomic group for the species.
+- `taxogroup2_unieuk`: the finer-grained UniEuk taxonomic group for the species, used to color taxa in the figures.
+
+The taxonomic group assignments are derived from the UniEuk taxonomy for the species in the NovelTree samplesheet (`pipeline_info/complete_samplesheet.valid.csv`).
+
+This script generates its figures using base R graphics and does not open or close a graphics device itself. We recommend running it interactively (e.g. in RStudio or an R console) so each figure can be inspected as it is produced. If you run it non-interactively with `Rscript code/org-sel-analysis.R`, all figures will be written to a single default `Rplots.pdf` in the working directory.
 
 ## Contributing
 

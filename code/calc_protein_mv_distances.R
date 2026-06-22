@@ -3,15 +3,13 @@ message("Loading the protein mv distance calculation source functions...")
 suppressMessages(library(parallel))
 suppressMessages(library(RcppParallel))
 suppressMessages(library(tidyverse))
-# Source the custom functions we use herein
-setwd("./src/")
+# Source the custom functions we use herein (paths are relative to the repo root)
 message(" 1. phylo_multivariate_distance_functions.R")
-suppressMessages(source("./phylo_multivariate_distance_functions.R"))
+suppressMessages(source(file.path("src", "phylo_multivariate_distance_functions.R")))
 message(" 2. protein_dist_permutation_tests.R")
-suppressMessages(source("./protein_dist_permutation_tests.R"))
+suppressMessages(source(file.path("src", "protein_dist_permutation_tests.R")))
 message(" 3. protein_distance_calculation_functions.R")
-suppressMessages(source("./protein_distance_calculation_functions.R"))
-setwd("../")
+suppressMessages(source(file.path("src", "protein_distance_calculation_functions.R")))
 
 # Function to read in and get per-species gene copy number
 # for each orthogroup
@@ -130,6 +128,12 @@ message(paste0("Done. Carrying out conservation analysis of ",
                detectCores(), " cores."))
 message("Hang in there, this will take a bit...")
 
+# Set a reproducible random seed for the downstream permutation tests. Use the
+# "L'Ecuyer-CMRG" generator so that each forked worker started by `mclapply`
+# receives a reproducible, independent stream of random numbers.
+RNGkind("L'Ecuyer-CMRG")
+set.seed(20240101)
+
 # Now, calculate multivariate distances of each protein, and each species
 # from humans and their respective protein gene copies
 gf_conservation_res <-
@@ -137,6 +141,7 @@ gf_conservation_res <-
            spp_tree = spp_tree, ref_spp = "Homo-sapiens",
            aa_stat_basedir = aa_stat_basedir,
            mc.cores = detectCores(), mc.preschedule = FALSE,
+           mc.set.seed = TRUE,
            max_treepl_treesize = 9999)
 
 message("Done!")

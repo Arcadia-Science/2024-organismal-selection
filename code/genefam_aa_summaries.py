@@ -176,19 +176,19 @@ def process_msa(msa_file):
         ("instability", lambda pa, seq: pa.instability_index()),
         (
             "flexibility",
-            lambda pa, seq: grand_average(seq, pa, ProtParam.ProtParamData.Flex),
+            lambda pa, seq: grand_average(pa, ProtParam.ProtParamData.Flex),
         ),
         (
             "gravy_kd",
-            lambda pa, seq: grand_average(seq, pa, ProtParam.ProtParamData.kd),
+            lambda pa, seq: grand_average(pa, ProtParam.ProtParamData.kd),
         ),
         (
             "gravy_bm",
-            lambda pa, seq: grand_average(seq, pa, ProtParam.ProtParamData.bm),
+            lambda pa, seq: grand_average(pa, ProtParam.ProtParamData.bm),
         ),
         (
             "gravy_ro",
-            lambda pa, seq: grand_average(seq, pa, ProtParam.ProtParamData.ro),
+            lambda pa, seq: grand_average(pa, ProtParam.ProtParamData.ro),
         ),
         ("isoelectric_point", lambda pa, seq: pa.isoelectric_point()),
         ("helix_fract", lambda pa, seq: pa.secondary_structure_fraction()[0]),

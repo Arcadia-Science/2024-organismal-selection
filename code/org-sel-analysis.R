@@ -707,7 +707,7 @@ conservation_matrix <- as.data.frame(matrix(
   ncol =
     length(conservation_species_best),
   nrow =
-    63
+    length(tree_nh$tip.label)
 ))
 
 # Column and rownames
@@ -732,6 +732,9 @@ conservation_matrix[is.na(conservation_matrix)] <-
 # PCA of conservation matrix
 pca <- prcomp(conservation_matrix)
 
+# Percentage of variance explained by each principal component
+pca_var_pct <- (pca$sdev^2 / sum(pca$sdev^2)) * 100
+
 # Match PC order to tree tip labels
 x <- pca$x[match(
   tree_nh$tip.label,
@@ -753,8 +756,8 @@ phylomorphospace(tree_nh,
   node.by.map = TRUE,
   node.size = 1.5,
   control = list(col.node = cols),
-  xlab = paste("PC1", "(45.89%)"),
-  ylab = paste("PC2", ("7.71%")),
+  xlab = paste0("PC1 (", sprintf("%.2f", pca_var_pct[1]), "%)"),
+  ylab = paste0("PC2 (", sprintf("%.2f", pca_var_pct[2]), "%)"),
   cex.axis = 1.5,
   cex.lab = 1.5
 )
@@ -1149,7 +1152,7 @@ elo_cophen <- cophen[match(
 
 # Add in age classifications to vector
 elo_age[elo_cophen < 1130] <- "young"
-elo_age[elo_cophen > 1130 & x < 2000] <- "mid"
+elo_age[elo_cophen > 1130 & elo_cophen < 2000] <- "mid"
 elo_age[elo_cophen > 2000] <- "old"
 
 # Split Elo ratings by age classification
