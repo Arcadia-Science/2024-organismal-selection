@@ -7,12 +7,13 @@ zip_url <- paste0(
 )
 system(paste("wget", zip_url, "-P", "data/"))
 
-# Unzip
-tar_file <- file.path(
-  "data", "organismal-selection-zenodo",
-  "gf-aa-multivar-distances.tar.gz"
-)
+# Unzip the Zenodo archive (extracts to 'data/2024-organismal-selection-zenodo/')
+zip_file <- file.path("data", "2024-organismal-selection-zenodo.zip")
+system(paste("unzip -o", zip_file, "-d", "data"))
+
+# Unzip the inner tarball containing the multivariate distance tables
 out_dir <- file.path("data", "2024-organismal-selection-zenodo")
+tar_file <- file.path(out_dir, "gf-aa-multivar-distances.tar.gz")
 system(paste("tar -xvzf", tar_file, "-C", out_dir))
 
 ##### Phylogeny#####
@@ -44,7 +45,7 @@ for (i in seq_along(files)) {
     "_final_summary_table.tsv",
     "",
     files[i]
-  )]] <- read.delim(paste(path, files[i], sep = ""))
+  )]] <- read.delim(file.path(path, files[i]))
 
   # Normalize trait distance rank by gene family size (useful for filtering)
   conservation[[i]]$rank_trait_dist_norm <-
